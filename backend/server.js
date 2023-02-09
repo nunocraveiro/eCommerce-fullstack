@@ -116,12 +116,13 @@ app.post("/api/user/", (req, res, next) => {
         return;
     }
     const data = {
-        name: req.body.name,
         email: req.body.email,
-        password : md5(req.body.password)
+        password : md5(req.body.password),
+        role: req.body.role,
+        storeId: req.body.storeId
     }
-    const sql ='INSERT INTO UserData (name, email, password) VALUES (?,?,?)'
-    const params =[data.name, data.email, data.password]
+    const sql ='INSERT INTO UserData (email, password, role, storeId) VALUES (?,?,?,?)'
+    const params =[data.email, data.password, data.role, data.storeId]
     db.run(sql, params, function (err, result) {
         if (err){
             res.status(400).json({"error": err.message})

@@ -16,7 +16,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
         console.log('Connected to the SQLite database.');
         const users = GetUsersAsJson();
         db.run(`create table UserData (
-                id INT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email VARCHAR(50),
                 password VARCHAR(50),
                 role VARCHAR(11),

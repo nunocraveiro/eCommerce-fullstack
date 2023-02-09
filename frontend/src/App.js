@@ -34,6 +34,23 @@ function getCurrentCart() {
     //update to get from localstorage
 }
 
+/* const onSubmit = e => {
+  e.preventDefault();
+  console.log('helloooo');
+  axios.post('http://localhost:8000/api/user', {
+		// Data to be sent to the server
+		firstName: 'John',
+		secondName: 'Doe',
+		email: 'jd@gmail.com',
+	})
+	.then(response => {
+		console.log(response.data);
+	})
+	.catch(function (error) {
+		console.error(error);
+	});
+}  */
+
 
 function App() {
     const [currentCart, setCurrentCart] = useState(getCurrentCart());
@@ -43,6 +60,7 @@ function App() {
       const getData = () => {
         axios.get('http://localhost:8000/api/product')
         .then(res => {
+          // console.log(res.data.data);
           setProducts(res.data.data);
         })
         .catch(err => {
@@ -50,28 +68,7 @@ function App() {
         })
       }
       getData();
-    }, [])
-    /* useEffect(() => {
-      const getData = async () => {
-        const response = await fetch('api/product/');
-        const data = await response.json()
-
-        console.log(data);
-  
-        const firstUser = data.results[0]
-  
-        setUser(prev => {
-          return {
-            ...prev,
-            name: firstUser.name.first,
-            age: firstUser.dob.age,
-            address: firstUser.location.street.name,
-          }
-        })
-      }
-  
-      getData()
-    }, []) */
+    }, []);
 
     return (
         <div className="App">
@@ -81,7 +78,7 @@ function App() {
                     <NavBar/>
                 </header>
                 <Routes>
-                    <Route exact path='/create-new-user' element={< NewUserForm/>}></Route>
+                    <Route exact path='/create-new-user' element={< NewUserForm /* onSubmit={onSubmit} *//>}></Route>
                     <Route exact path='/login' element={< LoginForm/>}></Route>
                     <Route exact path='/'
                            element={< ProductList products={fakeProducts} addToCart={addToCart}/>}></Route>
