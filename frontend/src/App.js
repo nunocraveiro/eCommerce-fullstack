@@ -6,6 +6,7 @@ import {
     BrowserRouter as Router,
     Routes,
     Route,
+    Link,
 } from 'react-router-dom';
 
 import {fakeProducts} from './fakedata/fakedata.js';
@@ -55,12 +56,12 @@ function getCurrentCart() {
 function App() {
     const [currentCart, setCurrentCart] = useState(getCurrentCart());
     const [products, setProducts] = useState([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
       const getData = () => {
         axios.get('http://localhost:8000/api/product')
         .then(res => {
-          // console.log(res.data.data);
           setProducts(res.data.data);
         })
         .catch(err => {
@@ -73,19 +74,27 @@ function App() {
     return (
         <div className="App">
             <Router>
-                <header className={"top_header"}>
-                    <ProfileBar/>
-                    <NavBar/>
-                </header>
                 <Routes>
-                    <Route exact path='/create-new-user' element={< NewUserForm /* onSubmit={onSubmit} *//>}></Route>
-                    <Route exact path='/login' element={< LoginForm/>}></Route>
-                    <Route exact path='/'
-                           element={< ProductList products={fakeProducts} addToCart={addToCart}/>}></Route>
+                    <Route exact path='/create-new-user' element={<NewUserForm /* onSubmit={onSubmit} *//>}></Route>
+                    <Route exact path='/login' element={<LoginForm />}></Route>
+                    <Route exact path='/' element={
+                        isLoggedIn ?
+                        <main>
+                            <header className={"top_header"}>
+                                <ProfileBar />
+                                <NavBar />
+                            </header>
+                            <ProductList products={fakeProducts} addToCart={addToCart}/>
+                        </main> :
+                        <main>
+                            <LoginForm />
+                            <p>Don't have an account? <Link to='/create-new-user'>Sign up</Link></p>
+                        </main>
+                    }></Route>
                     <Route exact path='/cart'
-                           element={< Cart products={currentCart} removeFromCart={removeFromCart}/>}></Route>
-                    <Route exact path='/admin' element={< AdminPage/>}></Route>
-                    <Route exact path='/admin/super' element={< SuperAdminPage/>}></Route>
+                           element={<Cart products={currentCart} removeFromCart={removeFromCart}/>}></Route>
+                    <Route exact path='/admin' element={<AdminPage />}></Route>
+                    <Route exact path='/admin/super' element={<SuperAdminPage />}></Route>
                 </Routes>
             </Router>
         </div>
